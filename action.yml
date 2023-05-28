@@ -1,0 +1,93 @@
+name: 'GPT-4 Localization for iOS'
+description: 'Localize your iOS app using GPT-4'
+inputs:
+  SOURCE_COMMIT_SHA:
+    description: 'SHA of the base commit in the PR'
+    required: true
+  TARGET_COMMIT_SHA:
+    description: 'SHA of the head commit in the PR'
+    required: true
+  OPENAI_KEY:
+    description: 'OpenAI key for accessing the API'
+    required: true
+  LLM_MODEL:
+    description: 'The language model to use for localization'
+    required: true
+  BASE_LANGUAGE:
+    description: 'The base language of the project'
+    required: true
+  TARGET_LANGUAGES:
+    description: 'The target languages for localization'
+    required: true
+  GITHUB_TOKEN:
+    description: 'The GitHub token for making API requests'
+    required: true
+  PULL_REQUEST_NUMBER:
+    description: 'Number of the pull request'
+    required: true
+  HEAD_REF:
+    description: 'Git reference for the head of the PR'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ inputs.HEAD_REF }}
+        fetch-depth: 0
+        token: ${{ inputs.GITHUB_TOKEN }}
+        
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install gitpython openai
+      shell: bash
+
+    - name: Run localization script
+      run: python src/llocalized.py
+      env:
+        SOURCE_COMMIT_SHA: ${{ inputs.SOURCE_COMMIT_SHA }}
+        TARGET_COMMIT_SHA: ${{ inputs.TARGET_COMMIT_SHA }}
+        OPENAI_KEY: ${{ inputs.OPENAI_KEY }}
+        LLM_MODEL: ${{ inputs.LLM_MODEL }}
+        BASE_LANGUAGE: ${{ inputs.BASE_LANGUAGE }}
+        TARGET_LANGUAGES: ${{ inputs.TARGET_LANGUAGES }}
+        GITHUB_WORKSPACE: ${{ github.workspace }}
+      shell: bash
+
+    - name: Create new branch
+      run: |
+        git checkout -b localization_updates_pr_${{ inputs.PULL_REQUEST_NUMBER }}
+      shell: bash
+        
+    - name: Push the new branch
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git push origin localization_updates_pr_${{ inputs.PULL_REQUEST_NUMBER }}
+      shell: bash
+
+    - name: Create Pull Request
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ inputs.GITHUB_TOKEN }}
+        branch: localization_updates_pr_${{ inputs.PULL_REQUEST_NUMBER }}
+        base: ${{ inputs.HEAD_REF }}
+        commit-message: Added translations
+        title: Localization updates for PR #${{ inputs.PULL_REQUEST_NUMBER }}
+        body: This PR includes the latest localization updates for PR #${{ inputs.PULL_REQUEST_NUMBER }}.
+        labels: localization, automated pr
+        draft: false
+
+    - name: Check PR
+      run: |
+        echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+        echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+      shell: bash
