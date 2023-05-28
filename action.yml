@@ -50,7 +50,7 @@ runs:
       shell: bash
 
     - name: Run localization script
-      run: python src/llocalized.py
+      run: python ${{ github.action_path }}/src/llocalized.py
       env:
         SOURCE_COMMIT_SHA: ${{ inputs.SOURCE_COMMIT_SHA }}
         TARGET_COMMIT_SHA: ${{ inputs.TARGET_COMMIT_SHA }}
