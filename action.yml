@@ -22,19 +22,31 @@ inputs:
   GITHUB_TOKEN:
     description: 'The GitHub token for making API requests'
     required: true
-  PULL_REQUEST_NUMBER:
-    description: 'Number of the pull request'
+  WORKING_BRANCH:
+    description: 'The branch on which to apply changes'
     required: true
-  HEAD_REF:
-    description: 'Git reference for the head of the PR'
+  PR_BASE_BRANCH:
+    description: 'The base branch for creating the PR'
     required: true
+  PR_TITLE:
+    description: 'Title for the automatically created PR'
+    required: false
+    default: 'Automated localization update'
+  PR_BODY:
+    description: 'Body for the automatically created PR'
+    required: false
+    default: 'This PR includes the latest localization updates.'
+  LABELS:
+    description: 'Labels for the automatically created PR'
+    required: false
+    default: 'localization, automated pr'
 runs:
   using: 'composite'
   steps:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        ref: ${{ inputs.HEAD_REF }}
+        ref: ${{ inputs.WORKING_BRANCH }}
         fetch-depth: 0
         token: ${{ inputs.GITHUB_TOKEN }}
         
@@ -63,14 +75,14 @@ runs:
 
     - name: Create new branch
       run: |
-        git checkout -b localization_updates_pr_${{ inputs.PULL_REQUEST_NUMBER }}
+        git checkout -b localization_updates_${{ github.run_number }}
       shell: bash
         
     - name: Push the new branch
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-        git push origin localization_updates_pr_${{ inputs.PULL_REQUEST_NUMBER }}
+        git push origin localization_updates_${{ github.run_number }}
       shell: bash
 
     - name: Create Pull Request
@@ -78,12 +90,12 @@ runs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
-        branch: localization_updates_pr_${{ inputs.PULL_REQUEST_NUMBER }}
-        base: ${{ inputs.HEAD_REF }}
-        commit-message: Added translations
-        title: Localization updates for PR #${{ inputs.PULL_REQUEST_NUMBER }}
-        body: This PR includes the latest localization updates for PR #${{ inputs.PULL_REQUEST_NUMBER }}.
-        labels: localization, automated pr
+        branch: localization_updates_${{ github.run_number }}
+        base: ${{ inputs.PR_BASE_BRANCH }}
+        commit-message: 'Automated localization update'
+        title: ${{ inputs.PR_TITLE }}
+        body: ${{ inputs.PR_BODY }}
+        labels: ${{ inputs.LABELS }}
         draft: false
 
     - name: Check PR
@@ -91,3 +103,4 @@ runs:
         echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
         echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
       shell: bash
+
