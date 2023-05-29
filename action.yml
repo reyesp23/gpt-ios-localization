@@ -1,6 +1,9 @@
 name: 'GPT-4 Localization for iOS'
 description: 'Localize your iOS app using GPT-4'
 inputs:
+  HEAD_REF:
+    description: 'Git reference for the head of the working branch'
+    required: true
   SOURCE_COMMIT_SHA:
     description: 'SHA of the base commit in the PR'
     required: true
@@ -22,9 +25,6 @@ inputs:
   GITHUB_TOKEN:
     description: 'The GitHub token for making API requests'
     required: true
-  WORKING_BRANCH:
-    description: 'The branch on which to apply changes'
-    required: true
   PR_BASE_BRANCH:
     description: 'The base branch for creating the PR'
     required: true
@@ -36,7 +36,7 @@ inputs:
     description: 'Body for the automatically created PR'
     required: false
     default: 'This PR includes the latest localization updates.'
-  LABELS:
+  PR_LABELS:
     description: 'Labels for the automatically created PR'
     required: false
     default: 'localization, automated pr'
@@ -46,7 +46,7 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        ref: ${{ inputs.WORKING_BRANCH }}
+        ref: ${{ inputs.HEAD_REF }}
         fetch-depth: 0
         token: ${{ inputs.GITHUB_TOKEN }}
         
@@ -95,7 +95,7 @@ runs:
         commit-message: 'Automated localization update'
         title: ${{ inputs.PR_TITLE }}
         body: ${{ inputs.PR_BODY }}
-        labels: ${{ inputs.LABELS }}
+        labels: ${{ inputs.PR_LABELS }}
         draft: false
 
     - name: Check PR
