@@ -10,20 +10,21 @@ inputs:
   TARGET_COMMIT_SHA:
     description: 'SHA of the head commit in the PR'
     required: true
+  GITHUB_TOKEN:
+    description: 'The GitHub token for making API requests'
+    required: true
   OPENAI_KEY:
     description: 'OpenAI key for accessing the API'
     required: true
   LLM_MODEL:
     description: 'The language model to use for localization'
-    required: true
+    required: false
+    default: 'gpt-4'
   BASE_LANGUAGE:
     description: 'The base language of the project'
     required: true
   TARGET_LANGUAGES:
     description: 'The target languages for localization'
-    required: true
-  GITHUB_TOKEN:
-    description: 'The GitHub token for making API requests'
     required: true
   PR_BASE_BRANCH:
     description: 'The base branch for creating the PR'
