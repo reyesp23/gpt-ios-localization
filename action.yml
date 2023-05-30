@@ -4,11 +4,8 @@ inputs:
   HEAD_REF:
     description: 'Git reference for the head of the working branch'
     required: true
-  SOURCE_COMMIT_SHA:
+  SOURCE_REF:
     description: 'SHA of the base commit in the PR'
-    required: true
-  TARGET_COMMIT_SHA:
-    description: 'SHA of the head commit in the PR'
     required: true
   GITHUB_TOKEN:
     description: 'The GitHub token for making API requests'
@@ -65,8 +62,8 @@ runs:
     - name: Run localization script
       run: python ${{ github.action_path }}/src/llocalized.py
       env:
-        SOURCE_COMMIT_SHA: ${{ inputs.SOURCE_COMMIT_SHA }}
-        TARGET_COMMIT_SHA: ${{ inputs.TARGET_COMMIT_SHA }}
+        SOURCE_COMMIT_SHA: ${{ inputs.SOURCE_REF }}
+        TARGET_COMMIT_SHA: ${{ inputs.HEAD_REF }}
         OPENAI_KEY: ${{ inputs.OPENAI_KEY }}
         LLM_MODEL: ${{ inputs.LLM_MODEL }}
         BASE_LANGUAGE: ${{ inputs.BASE_LANGUAGE }}
