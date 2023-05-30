@@ -1,0 +1,22 @@
+name: Localize - Opened PR
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
+
+jobs:
+  localize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Localize Action
+        uses: reyesp23/gpt-ios-localization@main
+        with:
+          HEAD_REF: ${{ github.event.pull_request.head.sha }}
+          SOURCE_REF: ${{ github.event.pull_request.base.sha }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          BASE_LANGUAGE: 'en'
+          TARGET_LANGUAGES: 'it, es'
+          PR_BASE_BRANCH: ${{ github.event.pull_request.head.ref }}
