@@ -2,10 +2,10 @@ name: 'GPT-4 Localization for iOS'
 description: 'Localize your iOS app using GPT-4'
 inputs:
   HEAD_REF:
-    description: 'Git reference for the head of the working branch'
+    description: 'Git reference (SHA or branch name) for the head commit of the working branch. This commit contains the string changes on the base language.'
     required: true
   SOURCE_REF:
-    description: 'SHA of the base commit in the PR'
+    description: 'Git reference (SHA or branch name) of the base commit or branch for comparison during the localization process.'
     required: true
   GITHUB_TOKEN:
     description: 'The GitHub token for making API requests'
