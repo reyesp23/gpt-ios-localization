@@ -1,5 +1,5 @@
 LANGUAGE_NAMES = {
-    "en" : "English",
+    "en": "English",
     "es": "Spanish",
     "fr": "French",
     "de": "German",
