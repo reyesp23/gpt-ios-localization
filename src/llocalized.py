@@ -1,7 +1,7 @@
 import os
 import git
 import utils
-from languages import LANGUAGE_NAMES
+from languages import LANGUAGES
 from logger import logger
 from translate import translate
 
@@ -51,7 +51,7 @@ def handle_deleted_file(file):
 
 def process_strings(changed_file, base_language_strings, modified_strings = {}):
     for target_language in TARGET_LANGUAGES:
-        logger.info(f'Translate {LANGUAGE_NAMES.get(BASE_LANGUAGE)} -> {LANGUAGE_NAMES.get(target_language)}')
+        logger.info(f'Translate {LANGUAGES.get(BASE_LANGUAGE)} -> {LANGUAGES.get(target_language)}')
         if target_language == BASE_LANGUAGE:
             logger.info('Target language is the same as base language')
             continue
@@ -83,7 +83,7 @@ def process_strings(changed_file, base_language_strings, modified_strings = {}):
         for key in keys_to_write:
             string = base_language_strings[key]
             value, context = string['value'], string['context']
-            translated_value = translate(LANGUAGE_NAMES[BASE_LANGUAGE], LANGUAGE_NAMES[target_language], value, context)
+            translated_value = translate(LANGUAGES[BASE_LANGUAGE], LANGUAGES[target_language], value, context)
             translated_strings[key] = translated_value
             logger.info(f' + {translated_value}')
 
@@ -99,6 +99,15 @@ def process_strings(changed_file, base_language_strings, modified_strings = {}):
 def main():
     logger.info('Starting...')
     logger.info(TARGET_LANGUAGES)
+
+    if BASE_LANGUAGE not in LANGUAGES:
+        logger.error(f'Base language {BASE_LANGUAGE} not supported')
+        exit(1)
+    
+    for language in TARGET_LANGUAGES:
+        if language not in LANGUAGES:
+            logger.error(f'Target language {language} not supported')
+            exit(1)
 
     source_commit = REPO.commit(SOURCE_COMMIT_SHA)
     target_commit = REPO.commit(TARGET_COMMIT_SHA)

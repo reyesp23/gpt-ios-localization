@@ -1,4 +1,4 @@
-LANGUAGE_NAMES = {
+LANGUAGES = {
     "en": "English",
     "es": "Spanish",
     "fr": "French",
