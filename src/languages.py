@@ -1,4 +1,3 @@
-
 LANGUAGE_NAMES = {
     "en" : "English",
     "es": "Spanish",
