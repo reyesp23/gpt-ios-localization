@@ -3,7 +3,7 @@
 This GitHub action translates your base language ```.strings``` files into multiple languages using Open AI ```GPT-4``` API and opens a Pull Request with the translations. 
 
 ### Contextual translations
-Add context to improve the translations by simply including a comment on each string:
+Add context to improve the translations by simply including a comment after each string:
 
 ```
 "sign_in_email_field" = "Sign In"; /* Context: Label used in email field on sign in page */
@@ -11,7 +11,7 @@ Add context to improve the translations by simply including a comment on each st
 
 ### ⚠️**Warning**⚠️
 - The OpenAI API is currently not available for free. To use this action you'll need to sign-up for a paid account and generate an API Key.
-- This action works reliably using ```gpt-4```, however this model is currently only available through a waitlist. You can still test this Action with ```gpt-3.5-turbo```, however it is not recommended since it ocasionally includes additional characters or format errors that can break your .strings file. 
+- This action works reliably using ```gpt-4```, you can still test this Action with ```gpt-3.5-turbo```, however it is not recommended since it ocasionally includes additional characters or format errors that can break your .strings file. 
 
 
 
