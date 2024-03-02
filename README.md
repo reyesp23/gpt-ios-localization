@@ -18,23 +18,27 @@ Add context to improve the translations by simply including a comment after each
 
 ## Configure Repository
 
-#### 1. Settings > Actions > General
+### Enable permissions
+#### 1. Settings > Actions > General > Workflow permissions
 
 - Select `Read and write permissions`
 - Toggle `Allow GitHub Actions to create and approve pull requests`
   
 <img width="893" alt="Screenshot 2023-05-29 at 23 00 45" src="https://github.com/reyesp23/gpt-ios-localization/assets/22821919/cd7de4b0-26c6-4199-8641-af9a3d6aa737">
 
-#### 2. Settings > Secrets and variables > Actions
+### Set your OpenAI API key as secret
+
+#### 2. Settings > Secrets and variables > Actions > Repository secrets > New repository secret
 
 <img width="1230" alt="Screenshot 2023-05-29 at 23 03 10" src="https://github.com/reyesp23/gpt-ios-localization/assets/22821919/7727d95a-62d3-4bf9-a99e-ce62dadc67bd">
 
 
 
 
-## Configure Workflow
+## Configure Actions
 
 #### Actions > set up a workflow yourself
+<img width="1130" alt="Screenshot 2024-03-01 at 7 59 20 PM" src="https://github.com/reyesp23/gpt-ios-localization/assets/22821919/2048b41f-6ce0-483d-9f2f-d7d254e5a47c">
 
 #### Inputs
 
