@@ -22,7 +22,7 @@ Add context to improve the translations by simply including a comment after each
 #### 1. Settings > Actions > General > Workflow permissions
 
 - Select `Read and write permissions`
-- Toggle `Allow GitHub Actions to create and approve pull requests`
+- Toggle on `Allow GitHub Actions to create and approve pull requests`
   
 <img width="893" alt="Screenshot 2023-05-29 at 23 00 45" src="https://github.com/reyesp23/gpt-ios-localization/assets/22821919/cd7de4b0-26c6-4199-8641-af9a3d6aa737">
 
