@@ -73,14 +73,14 @@ runs:
 
     - name: Create new branch
       run: |
-        git checkout -b localization_updates_${{ github.run_number }}
+        git checkout -b localization/${{ inputs.PR_BASE_BRANCH }}_${{ github.run_number }}
       shell: bash
         
     - name: Push the new branch
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-        git push origin localization_updates_${{ github.run_number }}
+        git push origin localization/${{ inputs.PR_BASE_BRANCH }}_${{ github.run_number }}
       shell: bash
 
     - name: Create Pull Request
@@ -88,7 +88,7 @@ runs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ inputs.GITHUB_TOKEN }}
-        branch: localization_updates_${{ github.run_number }}
+        branch: localization/${{ inputs.PR_BASE_BRANCH }}_${{ github.run_number }}
         base: ${{ inputs.PR_BASE_BRANCH }}
         commit-message: 'Automated localization update'
         title: ${{ inputs.PR_TITLE }}
