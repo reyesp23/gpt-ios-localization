@@ -10,7 +10,7 @@ LLM_MODEL = os.getenv('LLM_MODEL', 'gpt-4')
 SYSTEM_PROMPT = ("You are a helpful assistant that translates {reference} to "
                 "{target}. Only return the translated string with no additional comments. "
                 "Use the context if provided to generate the best possible translation. "
-                "Be careful to not add additional punctuation.")
+                "Be careful to not add additional punctuation make sure there is only a set of " " per string.")
 
 USER_PROMPT =  "Text to translate is: '{string}'. Context: '{context}'."
 
@@ -32,7 +32,7 @@ def translate(reference_language, target_language, string, context=None):
                 },
             ],
         )
-        return response.choices[0].message['content']
+        return response.choices[0].message.content
     except Exception as e:
         # Update the exception handling as per the new library's structure
         logger.error(f"Failed to translate string '{string}'. Error: {str(e)}")
